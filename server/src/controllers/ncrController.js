@@ -155,7 +155,7 @@ async function escalateNCR(req, res) {
     assignee_email: req.body.assignee_email ?? null,
     manager_email: req.body.manager_email ?? null,
     days_overdue: daysOverdue,
-    ncr_url: `https://caliper.vercel.app/ncrs/${ncr.id}`,
+    ncr_url: `https://caliper-lake.vercel.app/ncrs/${ncr.id}`,
   };
 
   // Best-effort — webhook failure does not fail the request.

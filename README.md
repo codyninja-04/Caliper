@@ -2,7 +2,7 @@
 
 > A full-stack Quality Management System built to simulate real-world manufacturing workflows — defect tracking, NCR management, CAPA lifecycle, supplier scoring, and audit trails. Built with zero monthly cost and deployed publicly.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://caliper.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://caliper-lake.vercel.app)
 [![Backend](https://img.shields.io/badge/API-Render-blue)](https://caliper-api.onrender.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 [![Node](https://img.shields.io/badge/Node.js-18+-green)](https://nodejs.org)
@@ -86,7 +86,7 @@ SUPABASE_URL=https://your-project-ref.supabase.co
 SUPABASE_SERVICE_KEY=your-service-role-key
 SUPABASE_ANON_KEY=your-anon-key
 POWER_AUTOMATE_WEBHOOK_URL=https://prod-xx.westus.logic.azure.com/workflows/...
-CORS_ORIGINS=http://localhost:5173,https://caliper.vercel.app
+CORS_ORIGINS=http://localhost:5173,https://caliper-lake.vercel.app
 ```
 
 `client/.env`
