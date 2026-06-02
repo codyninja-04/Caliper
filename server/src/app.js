@@ -22,16 +22,24 @@ app.use(helmet());
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
+// Normalize by trimming whitespace and stripping any trailing slash, so a
+// configured "https://x.app/" matches the browser's "https://x.app" Origin.
+const stripSlash = (s) => s.trim().replace(/\/+$/, '');
 const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
   .split(',')
-  .map((s) => s.trim());
+  .map(stripSlash)
+  .filter(Boolean);
 
 app.use(
   cors({
     origin(origin, cb) {
-      // Allow same-origin / curl (no origin) and any explicitly whitelisted origin.
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-      cb(new Error(`CORS blocked for origin: ${origin}`));
+      // Allow same-origin / curl (no origin) and any whitelisted origin
+      // (compared with trailing slashes normalized away).
+      if (!origin || allowedOrigins.includes(stripSlash(origin))) return cb(null, true);
+      // Disallowed origin: respond without CORS headers rather than throwing a
+      // 500. The browser still blocks the request, but we avoid a misleading
+      // server error and noisy logs.
+      cb(null, false);
     },
     credentials: true,
   })
