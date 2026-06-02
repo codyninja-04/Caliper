@@ -30,12 +30,23 @@ const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173')
   .map(stripSlash)
   .filter(Boolean);
 
+// This app's frontend lives on Vercel as caliper-*.vercel.app (production +
+// preview deploys get different subdomains) and on localhost in dev. Matching
+// these in code means a correct CORS_ORIGINS env var is a bonus, not a
+// single point of failure for the deployment.
+const CALIPER_VERCEL = /^https:\/\/caliper[a-z0-9-]*\.vercel\.app$/i;
+const LOCALHOST = /^http:\/\/localhost(:\d+)?$/i;
+
+function isAllowedOrigin(origin) {
+  const o = stripSlash(origin);
+  return allowedOrigins.includes(o) || CALIPER_VERCEL.test(o) || LOCALHOST.test(o);
+}
+
 app.use(
   cors({
     origin(origin, cb) {
-      // Allow same-origin / curl (no origin) and any whitelisted origin
-      // (compared with trailing slashes normalized away).
-      if (!origin || allowedOrigins.includes(stripSlash(origin))) return cb(null, true);
+      // Allow same-origin / curl (no origin) and any recognized origin.
+      if (!origin || isAllowedOrigin(origin)) return cb(null, true);
       // Disallowed origin: respond without CORS headers rather than throwing a
       // 500. The browser still blocks the request, but we avoid a misleading
       // server error and noisy logs.
