@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+client/dist/
+client/.vite/
+
+# Environment
+.env
+.env.local
+.env.*.local
+**/.env
+!**/.env.example
+.Renviron
+analytics/.Renviron
+
+# Analytics output (generated PNGs)
+analytics/output/*.png
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
