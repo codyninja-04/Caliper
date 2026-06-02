@@ -1,0 +1,29 @@
+# Render Blueprint — deploys the Caliper Express API on the free tier.
+# In Render: New → Blueprint → connect this repo. Render reads this file and
+# provisions the service. Secrets are marked sync:false so Render prompts you
+# for them instead of reading them from the repo.
+services:
+  - type: web
+    name: caliper-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node src/app.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Paste these in the Render dashboard when prompted (Project Settings → API in Supabase):
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      # Set to your Vercel URL once the frontend is deployed, e.g. https://caliper.vercel.app
+      - key: CORS_ORIGINS
+        sync: false
+      # Optional — only for NCR escalation emails. Leave blank if unused.
+      - key: POWER_AUTOMATE_WEBHOOK_URL
+        sync: false
